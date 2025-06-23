@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useCallback, useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const tempProducts = [
@@ -372,6 +372,14 @@ function ProductsProvider({ children }) {
     setFilteredProducts(searched);
   }
 
+  const resetQuantity = useCallback((sku) => {
+    setProducts((prev) =>
+      prev.map((product) =>
+        product.sku === sku ? { ...product, quantity: 0 } : product,
+      ),
+    );
+  }, []);
+
   return (
     <ProductsContext.Provider
       value={{
@@ -396,6 +404,7 @@ function ProductsProvider({ children }) {
         handleSearchQuery,
         filteredProducts,
         searchQuery,
+        resetQuantity,
       }}
     >
       {children}

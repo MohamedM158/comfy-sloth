@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useProducts } from '../../context/ProductsContext';
 import MainHeading from '../../ui/MainHeading';
 import { formatCurrency } from '../../helpers/helpers';
+import { useEffect } from 'react';
 
 function Product() {
   const { sku } = useParams();
@@ -10,8 +11,13 @@ function Product() {
     addToCart,
     handleIncreaseQuantity,
     handleDecreaseQuantity,
+    resetQuantity,
   } = useProducts();
   const currentProduct = products.filter((product) => product.sku === sku);
+
+  useEffect(() => {
+    resetQuantity(sku);
+  }, [sku, resetQuantity]);
 
   return (
     <>
